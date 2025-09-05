@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gift Card Rewards</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gradient-to-br from-orange-100 to-yellow-50 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-orange-500 to-orange-600 text-white py-12 shadow-lg text-center">
+    <h1 class="text-4xl md:text-5xl font-bold">✨ Choose Your Gift Card 🎁</h1>
+    <p class="mt-4 text-lg md:text-xl">Pick your favorite and follow 3 simple steps!</p>
+  </header>
+
+  <!-- Grid of Gift Cards -->
+  <section class="py-10 px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+    <div onclick="selectCard('amazon')" class="cursor-pointer bg-white shadow-lg rounded-xl overflow-hidden hover:scale-105 transition transform">
+      <img src="https://i.ibb.co/jZxM6kSt/images.png" class="w-full h-40 object-contain p-4" alt="Amazon Gift Card">
+      <div class="p-4 text-center font-semibold text-orange-600">Amazon</div>
+    </div>
+    <div onclick="selectCard('roblox')" class="cursor-pointer bg-white shadow-lg rounded-xl overflow-hidden hover:scale-105 transition transform">
+      <img src="https://i.ibb.co/B2kq9SN4/roblox-logo-png-seeklogo-365972.png" class="w-full h-40 object-contain p-4" alt="Roblox Gift Card">
+      <div class="p-4 text-center font-semibold text-red-500">Roblox</div>
+    </div>
+    <div onclick="selectCard('playstation')" class="cursor-pointer bg-white shadow-lg rounded-xl overflow-hidden hover:scale-105 transition transform">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg" class="w-full h-40 object-contain p-4" alt="PlayStation Gift Card">
+      <div class="p-4 text-center font-semibold text-blue-600">PlayStation</div>
+    </div>
+    <div onclick="selectCard('xbox')" class="cursor-pointer bg-white shadow-lg rounded-xl overflow-hidden hover:scale-105 transition transform">
+      <img src="https://i.ibb.co/4w8bf1KP/images-1.png" class="w-full h-40 object-contain p-4" alt="Xbox Gift Card">
+      <div class="p-4 text-center font-semibold text-green-600">Xbox</div>
+    </div>
+    <div onclick="selectCard('google')" class="cursor-pointer bg-white shadow-lg rounded-xl overflow-hidden hover:scale-105 transition transform">
+      <img src="https://i.ibb.co/N2mHCyMW/51-Kllhn-DHL-UF1000-1000-QL80-2.jpg" class="w-full h-40 object-contain p-4" alt="Google Play Gift Card">
+      <div class="p-4 text-center font-semibold text-green-500">Google Play</div>
+    </div>
+    <div onclick="selectCard('itunes')" class="cursor-pointer bg-white shadow-lg rounded-xl overflow-hidden hover:scale-105 transition transform">
+      <img src="https://i.ibb.co/MJ0nwG6/1389362846.jpg" class="w-full h-40 object-contain p-4" alt="iTunes Gift Card">
+      <div class="p-4 text-center font-semibold text-pink-500">iTunes</div>
+    </div>
+  </section>
+
+  <!-- Main Container (hidden until card selected) -->
+  <main id="mainContent" class="flex-grow flex items-center justify-center px-4 hidden">
+    <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 max-w-2xl w-full text-center">
+      <!-- Dynamic Image -->
+      <div class="flex justify-center mb-6">
+        <img id="cardImage" src="" alt="Gift Card" class="w-60 rounded-xl shadow-lg" />
+      </div>
+
+      <!-- Steps with Icons -->
+      <div class="space-y-8 text-left">
+        <div class="step flex items-center gap-4">
+          <i data-lucide="mouse-pointer-click" class="w-8 h-8 text-orange-600"></i>
+          <div>
+            <h2 class="text-2xl font-semibold text-orange-600">Step 1</h2>
+            <p class="text-gray-600">Click the button below to start your journey.</p>
+          </div>
+        </div>
+        <div class="step flex items-center gap-4">
+          <i data-lucide="check-circle" class="w-8 h-8 text-orange-600"></i>
+          <div>
+            <h2 class="text-2xl font-semibold text-orange-600">Step 2</h2>
+            <p class="text-gray-600">Complete a quick task or survey to move closer to your reward.</p>
+          </div>
+        </div>
+        <div class="step flex items-center gap-4">
+          <i data-lucide="gift" class="w-8 h-8 text-orange-600"></i>
+          <div>
+            <h2 class="text-2xl font-semibold text-orange-600">Step 3</h2>
+            <p id="dynamicText" class="text-gray-600">Unlock and claim your <strong>Gift Card</strong> instantly!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Countdown -->
+      <div class="mt-10">
+        <p class="text-lg font-medium text-gray-700">⏳ Offer ends in:</p>
+        <p id="countdown" class="text-3xl font-bold text-orange-600 mt-2">05:00</p>
+      </div>
+
+      <!-- CTA Button -->
+      <div class="mt-10">
+        <button id="claimBtn"
+                class="px-8 py-4 bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold rounded-xl shadow-lg transform transition hover:scale-105 hover:shadow-2xl">
+          🎁 Claim My Gift Card
+        </button>
+      </div>
+
+      <!-- Note -->
+      <p class="mt-6 text-sm text-gray-500">🔥 Hurry! Limited spots available today.</p>
+    </div>
+  </main>
+
+  <!-- Popup Modal -->
+  <div id="popup" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+    <div class="bg-white rounded-xl shadow-2xl p-6 md:p-8 text-center max-w-md w-full h-[80vh] flex flex-col">
+      <!-- Header -->
+      <div id="popupHeader">
+        <h2 class="text-2xl font-bold text-orange-600">🎁 Your Gift is Loading...</h2>
+        <p class="mt-2 text-gray-600">Please wait a few seconds while we prepare your reward.</p>
+        <p id="popupCountdown" class="text-3xl font-bold text-orange-600 mt-2">10</p>
+      </div>
+
+      <!-- Verification Message with Icon -->
+      <div id="verificationMessage" class="hidden opacity-0 mt-4 transition-opacity duration-1000 flex flex-col items-center">
+        <img src="https://cdn-icons-png.flaticon.com/512/709/709586.png" class="w-16 h-16 mb-2" alt="Verification Icon">
+        <h2 class="text-2xl font-bold text-green-600 text-center">✅ Complete at least one offer for verification</h2>
+        <p class="mt-2 text-gray-600 text-center">Please wait...</p>
+        <p id="offerCountdown" class="mt-2 text-orange-600 font-bold text-xl">5</p>
+      </div>
+
+      <!-- Iframe Countdown -->
+      <div id="iframeCountdown" class="hidden text-orange-600 font-bold text-lg mt-2">
+        ⏳ Offer expires in: <span id="iframeTime">25</span> sec
+      </div>
+
+      <!-- Iframe container -->
+      <div id="offerFrameContainer" class="hidden flex-grow w-full border rounded-lg overflow-hidden mt-4">
+        <iframe id="offerFrame" src="" class="w-full h-full" frameborder="0"></iframe>
+      </div>
+
+      <!-- Close button -->
+      <button onclick="closePopup()" class="mt-4 px-6 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-gray-700 font-medium">
+        ✖ Close
+      </button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center py-6 text-gray-500 text-sm">
+    © 2025 Gift Rewards Hub. All rights reserved.
+  </footer>
+
+  <script>
+    lucide.createIcons();
+
+    // Countdown timer (page)
+    let timeLeft = 300; 
+    const countdownEl = document.getElementById("countdown");
+    setInterval(() => {
+      if (timeLeft > 0) {
+        timeLeft--;
+        const minutes = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+        const seconds = String(timeLeft % 60).padStart(2, "0");
+        countdownEl.textContent = `${minutes}:${seconds}`;
+      }
+    }, 1000);
+
+    // Popup functionality
+    const claimBtn = document.getElementById("claimBtn");
+    const popup = document.getElementById("popup");
+    const popupCountdown = document.getElementById("popupCountdown");
+    const popupHeader = document.getElementById("popupHeader");
+    const verificationMessage = document.getElementById("verificationMessage");
+    const offerCountdown = document.getElementById("offerCountdown");
+    const offerFrameContainer = document.getElementById("offerFrameContainer");
+    const offerFrame = document.getElementById("offerFrame");
+    const iframeCountdown = document.getElementById("iframeCountdown");
+    const iframeTimeEl = document.getElementById("iframeTime");
+
+    claimBtn.addEventListener("click", () => {
+      popup.classList.remove("hidden");
+      popup.classList.add("flex");
+      let popupTime = 3;
+      popupCountdown.textContent = popupTime;
+      const interval = setInterval(() => {
+        popupTime--;
+        popupCountdown.textContent = popupTime;
+        if (popupTime <= 0) {
+          clearInterval(interval);
+          popupHeader.classList.add("hidden");
+          verificationMessage.classList.remove("hidden");
+          setTimeout(() => {
+            verificationMessage.classList.add("opacity-100");
+            startOfferCountdown();
+          }, 50);
+        }
+      }, 1000);
+    });
+
+    function startOfferCountdown() {
+      let offerTime = 3;
+      offerCountdown.textContent = offerTime;
+      const offerInterval = setInterval(() => {
+        offerTime--;
+        offerCountdown.textContent = offerTime;
+        if (offerTime <= 0) {
+          clearInterval(offerInterval);
+          // فتح الرابط مباشرة
+          verificationMessage.classList.add("hidden");
+          offerFrameContainer.classList.remove("hidden");
+          iframeCountdown.style.display = "block";
+          offerFrame.src = "https://installchecker.com/cl/i/lk4x5d"; // ضع رابط العروض هنا
+
+          // بدء عداد iframe
+          let iframeTime = 25;
+          const iframeInterval = setInterval(() => {
+            iframeTime--;
+            iframeTimeEl.textContent = iframeTime;
+            if (iframeTime <= 0) {
+              clearInterval(iframeInterval);
+              iframeCountdown.textContent = "⏳ Hurry! Offer will expire soon!";
+            }
+          }, 1000);
+        }
+      }, 1000);
+    }
+
+    function closePopup() {
+      popup.classList.add("hidden");
+      popupHeader.classList.remove("hidden");
+      verificationMessage.classList.add("hidden");
+      verificationMessage.classList.remove("opacity-100");
+      offerFrameContainer.classList.add("hidden");
+      iframeCountdown.style.display = "none";
+      offerFrame.src = "";
+      popupCountdown.textContent = "10";
+      offerCountdown.textContent = "5";
+      iframeTimeEl.textContent = "25";
+    }
+
+    // Select card from grid
+    function selectCard(type) {
+      const img = document.getElementById("cardImage");
+      const text = document.getElementById("dynamicText");
+      const main = document.getElementById("mainContent");
+      if (type === "amazon") { img.src = "https://i.ibb.co/jZxM6kSt/images.png"; text.innerHTML = "Unlock and claim your <strong>Amazon Gift Card</strong> instantly!"; } 
+      else if (type === "roblox") { img.src = "https://i.ibb.co/B2kq9SN4/roblox-logo-png-seeklogo-365972.png"; text.innerHTML = "Unlock and claim your <strong>Roblox Gift Card</strong> instantly!"; } 
+      else if (type === "playstation") { img.src = "https://upload.wikimedia.org/wikipedia/commons/0/00/PlayStation_logo.svg"; text.innerHTML = "Unlock and claim your <strong>PlayStation Gift Card</strong> instantly!"; }
+      else if (type === "xbox") { img.src = "https://i.ibb.co/4w8bf1KP/images-1.png"; text.innerHTML = "Unlock and claim your <strong>Xbox Gift Card</strong> instantly!"; }
+      else if (type === "google") { img.src = "https://i.ibb.co/N2mHCyMW/51-Kllhn-DHL-UF1000-1000-QL80-2.jpg"; text.innerHTML = "Unlock and claim your <strong>Google Play Gift Card</strong> instantly!"; }
+      else if (type === "itunes") { img.src = "https://i.ibb.co/MJ0nwG6/1389362846.jpg"; text.innerHTML = "Unlock and claim your <strong>iTunes Gift Card</strong> instantly!"; }
+      main.classList.remove("hidden");
+      main.scrollIntoView({ behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
